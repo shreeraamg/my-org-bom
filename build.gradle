@@ -4,7 +4,6 @@ plugins {
 }
 
 group = 'com.my-org'
-version = '1.0.0'
 
 javaPlatform {
   allowDependencies()
@@ -28,10 +27,24 @@ dependencies {
   }
 }
 
+def githubUser = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+def githubToken = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+
 publishing {
   publications {
     mavenBom(MavenPublication) {
       from components.javaPlatform
+    }
+  }
+
+  repositories {
+    maven {
+      name = "GitHubPackages"
+      url = uri("https://maven.pkg.github.com/shreeraamg/my-org-bom")
+      credentials {
+        username = githubUser
+        password = githubToken
+      }
     }
   }
 }

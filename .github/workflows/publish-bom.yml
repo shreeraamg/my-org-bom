@@ -1,0 +1,51 @@
+name: Publish BOM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    env:
+      GH_USERNAME: shreeraamg
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Bump Version
+        run: |
+          CURRENT_VERSION=$(grep "^version" gradle.properties | cut -d'=' -f2)
+          IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
+          NEW_VERSION="$major.$minor.$((patch+1))"
+          echo "New version: $NEW_VERSION"
+          sed -i "s/^version=.*/version=$NEW_VERSION/" gradle.properties
+          
+          git config user.name "${{ env.GH_USERNAME }}"
+          git config user.email "${{ secrets.GIT_USER_EMAIL }}"
+          
+          git add gradle.properties
+          git commit -m "Bump version to $NEW_VERSION"
+          git push https://${GH_USERNAME}:${{ secrets.PAT_GITHUB }}@github.com/${GH_USERNAME}/my-org-bom.git
+
+      - name: Publish to GitHub Packages
+        run: |
+          chmod +x gradlew
+          ./gradlew publish
+        env:
+          GITHUB_ACTOR: ${{ env.GH_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
