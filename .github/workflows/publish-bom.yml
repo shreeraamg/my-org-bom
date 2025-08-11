@@ -43,7 +43,9 @@ jobs:
           git push https://${GH_USERNAME}:${{ secrets.PAT_GITHUB }}@github.com/${GH_USERNAME}/my-org-bom.git
 
       - name: Publish to GitHub Packages
-        run: ./gradlew publish
+        run: |
+          chmod +x gradlew
+          ./gradlew publish
         env:
           GITHUB_ACTOR: ${{ env.GH_USERNAME }}
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
