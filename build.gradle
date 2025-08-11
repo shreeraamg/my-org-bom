@@ -15,13 +15,13 @@ repositories {
 
 dependencies {
   constraints {
-    api 'com.auth0:java-jwt:4.4.0'
+    api 'com.auth0:java-jwt:4.5.0'
     api 'com.google.guava:guava:33.4.7-jre'
     api 'io.confluent.ksql:ksqldb-api-client:8.0.0'
     api 'org.apache.commons:commons-collections4:4.5.0'
-    api 'org.json:json:20250107'
-    api 'org.mapstruct:mapstruct:1.6.2'
-    api 'org.mapstruct:mapstruct-processor:1.6.2'
+    api 'org.json:json:20250517'
+    api 'org.mapstruct:mapstruct:1.6.3'
+    api 'org.mapstruct:mapstruct-processor:1.6.3'
     api 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
     api 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'
   }
