@@ -40,7 +40,7 @@ jobs:
           
           git add gradle.properties
           git commit -m "Bump version to $NEW_VERSION"
-          git push https://${GH_USERNAME}:${{ secrets.PAT_GITHUB }}@github.com/${GH_USERNAME}/my-org/my-org-bom.git
+          git push https://${GH_USERNAME}:${{ secrets.PAT_GITHUB }}@github.com/${GH_USERNAME}/my-org-bom.git
 
       - name: Publish to GitHub Packages
         run: ./gradlew publish
